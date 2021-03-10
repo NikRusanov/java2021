@@ -23,8 +23,6 @@ public class Minimum {
         }
         T minimum = list.get(start);
 
-
-
         for (int i = start ; i < end - 1; ++i) {
             T currentElem = list.get(i);
             if (minimum.compareTo(currentElem) > 0 ) minimum = currentElem;
