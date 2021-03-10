@@ -1,6 +1,7 @@
 package com.rusanov.minlist;
 
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -50,4 +51,7 @@ class MinimumTest {
         assertEquals(4.0 ,Minimum.findMin(list, 0, 0), 0.0001);
         assertEquals(4.0 ,Minimum.findMin(list, 0, 1), 0.0001);
     }
+
+
+
 }
