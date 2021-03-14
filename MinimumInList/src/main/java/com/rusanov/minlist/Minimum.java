@@ -13,8 +13,8 @@ public class Minimum {
 
         int size = list.size();
 
-        if(start < 0 || start > size) return null;
-        if(end  > size || end < 0) return null;
+        if(start < 0 || start > size) throw new IllegalArgumentException("Error start argument");
+        if(end  > size || end < 0)  throw new IllegalArgumentException("Error end argument");
 
         if(end < start) {
             start = start + end;

@@ -2,17 +2,17 @@ package com.rusanov.minlist;
 
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 class MinimumTest {
-    
-    
+
+
     @Test
     public void findDoubleMinTest() {
         List<Double> list = new ArrayList<>(){{
@@ -35,9 +35,20 @@ class MinimumTest {
             add(2.00001);
             add(-2.00001);
         }};
-        assertNull(Minimum.findMin(list, 0, 100));
-        assertNull(Minimum.findMin(list, -2, 4));
-        assertNull(Minimum.findMin(list, 100, 4));
+       //end
+        try {
+            Minimum.findMin(list, 0, 100);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("Error end argument", exception.getMessage());
+        }
+        try {
+            Minimum.findMin(list, -2, 4);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("Error start argument", exception.getMessage());
+        }
+
     }
 
     @Test
