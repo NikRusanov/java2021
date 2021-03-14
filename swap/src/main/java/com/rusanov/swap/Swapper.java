@@ -10,7 +10,8 @@ public class Swapper {
         if(anArray == null) return false;
         length = anArray.length;
         if( length == 0 ) return false;
-        if(!isValidIndexes(i,j)) return false;
+        // false ?
+        if(!isValidIndexes(i,j)) throw new IllegalArgumentException("bad indexes");
 
         int tmp = anArray[i];
         anArray[i] = anArray[j];
@@ -25,7 +26,7 @@ public class Swapper {
     public  <T> boolean swap(int i, int j, List<T> anArray) {
         if(anArray == null || anArray.isEmpty()) return false;
         if(!isValidIndexes(i,j))
-        anArray.set(i, anArray.set(j, anArray.get(i)));
+            anArray.set(i, anArray.set(j, anArray.get(i)));
 
         return true;
     }

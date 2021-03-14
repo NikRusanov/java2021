@@ -48,14 +48,22 @@ public class SwapTest {
     public void swapOutOfRightBoundElements() {
         int[] array = new int[5];
 
-        assertFalse(swapper.swap(0, 30, array));
+        try {
+            swapper.swap(0, 30, array);
+        } catch (IllegalArgumentException ex) {
+            assertEquals("bad indexes", ex.getMessage());
+        }
+
     }
 
     @Test
     public void swapOutOfLeftBoundElements() {
         int[] array = new int[5];
-
-        assertFalse(swapper.swap(-5, 3, array));
+        try {
+            swapper.swap(-5, 3, array);
+        } catch (IllegalArgumentException ex) {
+            assertEquals("bad indexes", ex.getMessage());
+        }
     }
 
 
