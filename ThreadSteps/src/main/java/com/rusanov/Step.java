@@ -14,7 +14,6 @@ public class Step extends  Thread{
     @Override
     public void run() {
         while (true) {
-            boolean locked = false;
             System.out.println(this.name);
 
             try {
