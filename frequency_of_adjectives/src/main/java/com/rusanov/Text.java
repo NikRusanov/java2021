@@ -6,15 +6,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Text {
     private final String path;
 
-    private long countOfWords;
+
     private static final List<String> wordEndings;
     static {
         //прилагательные, причастия, деепричастия
@@ -36,7 +34,7 @@ public class Text {
         wordEndings.add("ом");
         wordEndings.add("ем");
     }
-    private final  AtomicLong countOfAdjectives = new AtomicLong();
+    private long countOfAdjectives;
 
     public Text(String path) {
         this.path = path;
@@ -47,19 +45,20 @@ public class Text {
 
     public  double calculateFrequency(int minLength, int maxLength) {
         List<String> words = getWords();
-        if(words == null || words.isEmpty()) {
+        long countOfWords = words.size();
+        if(words.isEmpty()) {
             return 0;
         }
         words.stream()
                 .filter(s -> s.length() >= minLength && s.length() <= maxLength)
                 .forEach(this::calculateAdjectives);
-        return countOfAdjectives.getOpaque()/(double)countOfWords*100;
+        return countOfAdjectives/(double)countOfWords*100;
     }
 
     private void calculateAdjectives(String s) {
         for (var ends: wordEndings) {
             if(s.endsWith(ends)) {
-                countOfAdjectives.getAndIncrement();
+                countOfAdjectives++;
             }
         }
     }
@@ -72,19 +71,17 @@ public class Text {
         catch (IOException ex) {
             ex.printStackTrace();
         }
-        countOfWords = words.size();
-        words.forEach(System.out::println);
+     //   words.forEach(System.out::println);
         return words;
     }
 
     private List<String> filterWords(Stream<String> lineStream) {
         return lineStream.map(s -> s.split(" "))
-                .filter(Objects::nonNull)
                 .flatMap(Arrays::stream)
-// некоторые пустые строки не удаляются
-                //TODO убрать цифры
-                .filter(s -> !s.isBlank())
                 .map(s ->  s.replaceAll("(?U)[\\pP]", ""))
+                .filter(s -> !s.isBlank() && !s.matches("^\\d+$"))
                 .collect(Collectors.toList());
     }
+
+
 }
