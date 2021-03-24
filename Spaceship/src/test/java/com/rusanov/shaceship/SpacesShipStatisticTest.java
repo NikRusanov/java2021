@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 public class SpacesShipStatisticTest {
 
+    private static Double DOUBLE_DELTA = 0.001;
     @Test
     public void bigSpeedTest() {
         List<Spaceship> spaceships = new ArrayList<>(){{
@@ -41,7 +42,7 @@ public class SpacesShipStatisticTest {
         }};
 
         SpaceshipSpeedStatistic statistic = new SpaceshipSpeedStatistic(spaceships);
-        assertEquals(5.666, statistic.getAverageSpeed(), 0.001);
+        assertEquals(5.666, statistic.getAverageSpeed(), DOUBLE_DELTA);
     }
 
     @Test
