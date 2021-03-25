@@ -5,27 +5,29 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Step extends  Thread{
 
-    final static Lock lock = new ReentrantLock();
+
     final private String  name;
-    public Step(String name) {
+    private final Object lock;
+    public Step(String name, Object lock) {
         this.name = name;
+        this.lock = lock;
     }
+
 
     @Override
     public void run() {
         while (true) {
-            System.out.println(this.name);
+            synchronized (lock) {
+                lock.notify();
+                System.out.println(name + "step");
 
-            try {
-                lock.lock();
-                Step.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
-
-
         }
     }
 
