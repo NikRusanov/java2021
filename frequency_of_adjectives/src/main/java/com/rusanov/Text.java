@@ -3,9 +3,7 @@ package com.rusanov;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,6 +12,7 @@ public class Text {
 
 
     private static final List<String> wordEndings;
+    private final Map<String, Integer> adjectivesCount = new HashMap<>();
     static {
         //прилагательные, причастия, деепричастия
         wordEndings = new ArrayList<>();
@@ -41,9 +40,30 @@ public class Text {
     }
 
 
+    public String calculateAdjectivesStatistic(int minLength, int maxLength) {
+        double frequency = calculateFrequency(minLength, maxLength);
+        return "Частота: " + frequency + "\nЧастота по популярности: \n" +
+                getTopAdjectives(10);
+
+    }
+
+    public String getTopAdjectives(int count) {
+        StringBuilder sb = new StringBuilder();
+        adjectivesCount
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .limit(count)
+                .forEach(element -> {
+                    sb.append(element.getKey());
+                    sb.append(": ").append(element.getValue());
+                    sb.append("\n");
+                });
+        return sb.toString();
+    }
 
 
-    public  double calculateFrequency(int minLength, int maxLength) {
+    private   double calculateFrequency(int minLength, int maxLength) {
         List<String> words = getWords();
         long countOfWords = words.size();
         if(words.isEmpty()) {
@@ -52,15 +72,26 @@ public class Text {
         words.stream()
                 .filter(s -> s.length() >= minLength && s.length() <= maxLength)
                 .forEach(this::calculateAdjectives);
-        return countOfAdjectives/(double)countOfWords*100;
+
+        return countOfAdjectives/(double)countOfWords;
     }
 
-    private void calculateAdjectives(String s) {
+    private void calculateAdjectives(String word) {
         for (var ends: wordEndings) {
-            if(s.endsWith(ends)) {
+            if(word.endsWith(ends)) {
+                incrementInMap(word);
                 countOfAdjectives++;
             }
         }
+    }
+
+    private void incrementInMap(String word) {
+        Integer count  = 0;
+        if (adjectivesCount.containsKey(word)) {
+            count = adjectivesCount.get(word);
+        }
+        adjectivesCount.put(word, ++count);
+
     }
 
     private List<String> getWords()  {
@@ -71,7 +102,6 @@ public class Text {
         catch (IOException ex) {
             ex.printStackTrace();
         }
-     //   words.forEach(System.out::println);
         return words;
     }
 
@@ -80,6 +110,7 @@ public class Text {
                 .flatMap(Arrays::stream)
                 .map(s ->  s.replaceAll("(?U)[\\pP]", ""))
                 .filter(s -> !s.isBlank() && !s.matches("^\\d+$"))
+                .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
 
