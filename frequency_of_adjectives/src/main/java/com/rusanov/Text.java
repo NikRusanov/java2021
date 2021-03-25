@@ -12,9 +12,10 @@ public class Text {
 
 
     private static final List<String> wordEndings;
+    private long countOfAdjectives;
     private final Map<String, Integer> adjectivesCount = new HashMap<>();
     static {
-        //прилагательные, причастия, деепричастия
+        //прилагательные, причастия, деепричастия и прочие Андреи с Василиями
         wordEndings = new ArrayList<>();
         wordEndings.add("ой");
         wordEndings.add("ый");
@@ -33,7 +34,8 @@ public class Text {
         wordEndings.add("ом");
         wordEndings.add("ем");
     }
-    private long countOfAdjectives;
+
+
 
     public Text(String path) {
         this.path = path;
