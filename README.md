@@ -3,4 +3,5 @@
 3. Spaceship
 4. Свап. Класс Swapper, метод `public  <T> boolean swap(int i, int j, List<T> anArray) `
 5. Банк. `BankProblem`
+11. Компаратор. `ComparablePerson`
 30. Робот. `Steps`
